@@ -1,44 +1,84 @@
-node {
-   def mvnHome = tool 'M3'
+pipeline {
+  agent {
+    node{label 'docker'}
+  }
+  stages {
+    stage('Build && Test') {
+      agent{
+        docker {
+            image 'maven:3-alpine'
+            label 'docker'
+            args '-v maven-repo:/root/.m2'
+        }
+      }
+      steps {
+        sh 'mvn package -Dmaven.test.skip=true'
+        sh "mvn test"
+        sh "integration-test"
+        stash includes: 'target/*', name: 'BuildTarget'
+      }
+      post {
+        always {
+        	junit 'target/surefire-reports/*.xml'
+        	tapdTestReport frameType: 'JUnit', onlyNewModified: true, reportPath: 'target/surefire-reports/*.xml'
+        }
+      }
+    }
+    stage('Nexus') {
+        steps{
+            dir("${WORKSPACE}"){
+                sh label: '', script: "ls -la"
+                unstash 'BuildTarget'
+                nexusPublisher nexusInstanceId: 'DevOpsNexus', nexusRepositoryId: 'releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: 'c', extension: 'war', filePath: 'target/calculator.war']], mavenCoordinate: [artifactId: 'calculator', groupId: 'cn.tapd.template', packaging: 'war', version: '${BUILD_NUMBER}']]]
+            }
+        }
+    }
+     stage('Code Scanner'){
+        agent{
+          docker{
+            image 'sonarsource/sonar-scanner-cli'
+            label 'docker'
+            args '-v ${WORKSPACE}:/usr/src'
+          }
+        }
+         steps {
+               withSonarQubeEnv('DevOpsSonarQube') {
+                    sh 'sonar-scanner -X -Dsonar.language=java -Dsonar.projectKey=$JOB_NAME -Dsonar.projectName=$JOB_NAME -Dsonar.projectVersion=$GIT_COMMIT -Dsonar.sources=src/ -Dsonar.sourceEncoding=UTF-8 -Dsonar.java.binaries=target/ -Dsonar.exclusions=src/test/**'
+              }
+            
+        }
 
-   stage('Checkout Code') { 
-      git 'https://github.com/maping/java-maven-calculator-web-app.git'
-   }
-   stage('JUnit Test') {
-      if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' clean test"
-      } else {
-         bat(/"${mvnHome}\bin\mvn" clean test/)
+    }
+    stage('Archive') {
+      steps {
+        archiveArtifacts(artifacts: 'target/*.war', fingerprint: true)
       }
-   }
-   stage('Integration Test') {
-      if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' integration-test"
-      } else {
-         bat(/"${mvnHome}\bin\mvn" integration-test/)
+    }
+    stage('Package Docker') {
+      steps {
+        sh "docker build -t calculator:${env.BUILD_NUMBER} -t calculator:latest ."
       }
-   }
- /*
-   stage('Performance Test') {
-      if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' cargo:start verify cargo:stop"
-      } else {
-         bat(/"${mvnHome}\bin\mvn" cargo:start verify cargo:stop/)
+    }
+    stage('Deploy'){
+      steps {
+        sh "docker-compose up --force-recreate -d"
       }
-   }
-  */
-  stage('Performance Test') {
-      if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' verify"
-      } else {
-         bat(/"${mvnHome}\bin\mvn" verify/)
+    }
+     
+     stage('Build && Test') {
+      agent{
+        docker {
+            image 'maven:3-alpine'
+            label 'docker'
+            args '-v maven-repo:/root/.m2'
+        }
       }
-   }
-   stage('Deploy') {
-      timeout(time: 10, unit: 'MINUTES') {
-           input message: 'Deploy this web app to production ?'
-      }
-      echo 'Deploy...'
-   }
+      steps {
+        sh "mvn verify"
+       }
+    }
+
+  }
+  
 }
-   
+
