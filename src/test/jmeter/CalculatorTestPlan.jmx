@@ -33,7 +33,7 @@
           <stringProp name="HTTPSampler.port">8880</stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">calculator/api/calculator/ping</stringProp>
+          <stringProp name="HTTPSampler.path">api/calculator/ping</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -52,7 +52,7 @@
           <stringProp name="HTTPSampler.port">8880</stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">calculator/api/calculator/add?x=8&amp;y=26</stringProp>
+          <stringProp name="HTTPSampler.path">api/calculator/add?x=8&amp;y=26</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -71,7 +71,7 @@
           <stringProp name="HTTPSampler.port">8880</stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">calculator/api/calculator/sub?x=12&amp;y=8</stringProp>
+          <stringProp name="HTTPSampler.path">api/calculator/sub?x=12&amp;y=8</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -90,7 +90,7 @@
           <stringProp name="HTTPSampler.port">8880</stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">calculator/api/calculator/mul?x=11&amp;y=8</stringProp>
+          <stringProp name="HTTPSampler.path">api/calculator/mul?x=11&amp;y=8</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -109,7 +109,7 @@
           <stringProp name="HTTPSampler.port">8880</stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">calculator/api/calculator/div?x=12&amp;y=12</stringProp>
+          <stringProp name="HTTPSampler.path">api/calculator/div?x=12&amp;y=12</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
