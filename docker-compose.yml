@@ -1,0 +1,6 @@
+version: '3'
+services:
+    calculator_demo:
+        image: "calculator:latest"
+        ports:
+            - "8181:8080"
