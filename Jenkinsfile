@@ -12,7 +12,7 @@ pipeline {
         }
       }
       steps {
-        sh 'mvn package -Dmaven.test.skip=true'
+        sh 'mvn clean package -Dmaven.test.skip=true'
         sh "mvn test"
         sh "mvn integration-test"
         stash includes: 'target/*', name: 'BuildTarget'
