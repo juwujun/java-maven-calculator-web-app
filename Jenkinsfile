@@ -56,6 +56,7 @@ pipeline {
     }
     stage('Package Docker') {
       steps {
+        sh "docker rmi calculator:latest"
         sh "docker build -t calculator:${env.BUILD_NUMBER} -t calculator:latest ."
       }
     }
