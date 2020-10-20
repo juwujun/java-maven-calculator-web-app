@@ -65,7 +65,7 @@ pipeline {
       }
     }
      
-     stage('Build && Test') {
+     stage('Performance Test') {
       agent{
         docker {
             image 'maven:3-alpine'
