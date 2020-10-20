@@ -14,7 +14,7 @@ pipeline {
       steps {
         sh 'mvn package -Dmaven.test.skip=true'
         sh "mvn test"
-        sh "integration-test"
+        sh "integration-test integration-test"
         stash includes: 'target/*', name: 'BuildTarget'
       }
       post {
